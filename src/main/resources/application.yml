@@ -1,0 +1,41 @@
+server:
+  port: 8084
+  servlet:
+    context-path: /resource-server
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+      base-path: '/api/admin/service-info'
+
+---
+spring:
+  datasource:
+    username: admin
+    password: SomethingLong123!
+    url: jdbc:mysql://scc.cxnse0qgwvdu.eu-west-1.rds.amazonaws.com:3306/resource-dani
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+keycloak:
+  realm: SecondClosetClub
+  resource: frontEnd
+  public-client: true
+  ssl-required: none
+  cors: true
+  bearer-only: true
+  use-resource-role-mappings: true
+  security-constraints:
+    - authRoles:
+        - scc_user_role
+      security-collections:
+        - name: Logged in endpoint
+        - patterns:
+            - /api/private/*
+    - authRoles:
+        - scc_admin_role
+      security-collections:
+        - name: Admin only endpoints
+          patterns:
+            - /api/admin/*

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registration Complete</title>
+</head>
+<body style="background: whitesmoke; padding: 30px; height: 100%">
+<h5 style="font-size: 18px; margin-bottom: 6px">Hey Iaina,</h5>
+<p style="font-size: 16px; font-weight: 500">You just received a booking with the below information.
+<p th:text="${'Booking Id ' + bookingId}"></p>
+<p th:text="${'Booking Client Name ' + fullName}"></p>
+<p th:text="${'Product Id ' + productId}"></p>
+<p th:text="${'Product Name ' + productName}"></p>
+<p th:text="${'Product Size ' + productSize}"></p>
+<p th:text="${'Start Date ' + bookingStartDate}"></p>
+<p>Congrats, Love Shane!</p>
+</body>
+</html>
