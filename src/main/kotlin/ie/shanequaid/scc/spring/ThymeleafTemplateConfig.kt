@@ -19,10 +19,10 @@ class ThymeleafTemplateConfig {
     @Bean
     fun htmlTemplateResolver(): SpringResourceTemplateResolver? {
         val emailTemplateResolver = SpringResourceTemplateResolver()
-        emailTemplateResolver.setPrefix("classpath:/templates/")
-        emailTemplateResolver.setSuffix(".html")
-        emailTemplateResolver.setTemplateMode(TemplateMode.HTML)
-        emailTemplateResolver.setCharacterEncoding(StandardCharsets.UTF_8.name())
+        emailTemplateResolver.prefix = "classpath:/templates/"
+        emailTemplateResolver.suffix = ".html"
+        emailTemplateResolver.templateMode = TemplateMode.HTML
+        emailTemplateResolver.characterEncoding = StandardCharsets.UTF_8.name()
         return emailTemplateResolver
     }
 }

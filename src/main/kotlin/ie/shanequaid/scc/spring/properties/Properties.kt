@@ -14,3 +14,23 @@ class KeycloakClientProperties {
     lateinit var roleActiveMemberId: String
 
 }
+
+@Configuration
+@ConfigurationProperties("scc.bucket")
+class SCCBucketProperties {
+    lateinit var name: String
+    lateinit var url: String
+    lateinit var region: String
+    lateinit var accessKey: String
+    lateinit var secretKey: String
+}
+
+@Configuration
+@ConfigurationProperties("scc.email")
+class SCCEmailProperties {
+    lateinit var senderEmail: String
+    lateinit var adminEmail: String
+    lateinit var accessKey: String
+    lateinit var secretKey: String
+
+}

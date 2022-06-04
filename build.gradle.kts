@@ -23,9 +23,7 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-/*
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-*/
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -35,6 +33,9 @@ dependencies {
     implementation("org.keycloak:keycloak-admin-client:10.0.0")
     implementation("org.keycloak:keycloak-spring-boot-starter:15.0.2")
     implementation("com.amazonaws:aws-java-sdk:1.12.126")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.flywaydb:flyway-core:7.7.3")
+
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
 /*
