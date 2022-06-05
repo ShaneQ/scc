@@ -1,5 +1,6 @@
 package ie.shanequaid.scc.persistence.model
 
+import ie.shanequaid.scc.persistence.model.dto.ImageDTO
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -7,43 +8,36 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 
 @Entity
-class Season {
+class Season (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val id: Long? = null
-    private val name: String? = null
-}
+    val id: Long,
+    val name: String? = null
+)
 
 @Entity
-class Size {
+class Size (
     @Id
-    private val id: Long? = null
+    val id: Long? = null,
 
     @Column(insertable = false, updatable = false)
-    private val name: String? = null
-}
+    val name: String
+)
 
 @Entity
-class Color {
+class Color (
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val id: Long? = null
-    private val name: String? = null
-}
+    val id: Long,
+    val name: String? = null
+)
 
 @Entity
-class Image {
+class Image (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val id: Long? = null
-    private val path: String? = null
-    private val fileName: String? = null
-}
-
-@Entity
-class Occasion {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val id: Long? = null
-    private val name: String? = null
+    val id: Long? = null,
+    val path: String? = null,
+    @Column(updatable = false)
+    val fileName: String? = null
+) {
 }

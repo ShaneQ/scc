@@ -1,8 +1,9 @@
 package ie.shanequaid.scc.persistence.model
 
-import java.io.Serializable
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
@@ -11,53 +12,44 @@ import javax.persistence.MapsId
 import javax.persistence.OneToOne
 
 @Entity
-class ProductInventory {
+class ProductInventory(
+
+    @Column(name = "STATUS")
+    @Enumerated(EnumType.STRING)
+    val status: ProductInventoryStatus? = null,
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val id: Long? = null
-    private val id_product: Long? = null
-
+    val id: Long? = null,
+    val id_product: Long? = null,
     @OneToOne
     @JoinColumn(name = "id_size")
-    private val size: Size? = null
-    private val status: String? = null
-}
+    val size: Size? = null
+)
 
 enum class ProductInventoryStatus {
     BOOKED, IN_USE, WAITING_RETURN, STORED, WASH, DEACTIVATED, LATE_RETURN
 }
 
 @Entity
-class ProductMeasurement : Serializable {
+class ProductMeasurement(
     @Id
     @Column(name = "id_product")
-    private val id: Long? = null
+    val id: Long? = null,
 
     @OneToOne
     @MapsId
     @JoinColumn(name = "id_product")
-    private val product: Product? = null
-    private val length: String? = null
-    private val chest: String? = null
-    private val hips: String? = null
-    private val waist: String? = null
-}
+    val product: Product? = null,
+    val length: String,
+    val chest: String,
+    val hips: String,
+    val waist: String
+)
 
 @Entity
-class ProductOccasion {
+class ProductCategory(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val id: Long? = null
-    private val id_product: Long? = null
-
-    @OneToOne
-    @JoinColumn(name = "id_occasion")
-    private val occasion: Occasion? = null
-}
-@Entity
-class ProductCategory {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val id: Long? = null
-    private val name: String? = null
-}
+    val id: Long,
+    val name: String? = null
+)

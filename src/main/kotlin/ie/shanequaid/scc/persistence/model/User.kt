@@ -11,36 +11,37 @@ import javax.persistence.Enumerated
 import javax.persistence.Id
 
 @Entity(name = "USER")
-class User {
+class User constructor(
     @Id
     @Type(type = "uuid-char")
-    private val id: UUID? = null
-    private val firstName: String? = null
-    private val lastName: String? = null
-    private val phone: String? = null
-    private val email: String? = null
-    private val dob: Date? = null
-    private val country: String? = null
-    private val city: String? = null
+    var id: UUID? = null,
+    var firstName: String,
+    var lastName: String,
+    var phone: String,
+    var email: String,
+    var dob: Date,
+    var country: String,
+    var city: String,
 
     @Column(name = "eircode")
-    private val eirCode: String? = null
-    private val addressLineOne: String? = null
-    private val addressLineTwo: String? = null
-    private val startDate: LocalDate? = null
-    private val endDate: LocalDate? = null
-    private val createdAt: LocalDate? = null
-    private val membership = 0
+    var eirCode: String,
+    var addressLineOne: String,
+    var addressLineTwo: String,
+    var startDate: LocalDate? = null,
+    var endDate: LocalDate? = null,
+    @Column(insertable=false, updatable=false)
+    var createdAt: LocalDate? = null,
+    var membership: Int? = null,
 
     @Enumerated(EnumType.STRING)
-    private val status: Status? = null
+    var status: UserStatus,
 
-    enum class Status {
-        REQUESTED, ACTIVATED, DEACTIVATED, BLOCKED
-    }
-
+    ) {
     val fullName: String
         get() = java.lang.String.format("%s %s", firstName, lastName)
 }
 
+enum class UserStatus {
+    REQUESTED, ACTIVATED, DEACTIVATED, BLOCKED
+}
 

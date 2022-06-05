@@ -35,12 +35,10 @@ dependencies {
     implementation("com.amazonaws:aws-java-sdk:1.12.126")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.flywaydb:flyway-core:7.7.3")
+    implementation ("io.github.microutils:kotlin-logging-jvm:2.1.20")
+    implementation ("ch.qos.logback:logback-classic:1.2.6")
 
     kapt("org.springframework.boot:spring-boot-configuration-processor")
-
-/*
-	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
-*/
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")

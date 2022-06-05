@@ -14,32 +14,31 @@ import javax.persistence.ManyToOne
 import javax.persistence.OneToOne
 
 @Entity(name = "BOOKING_REQUEST")
-class BookingRequest {
+class BookingRequest(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val id: Long? = null
+    var id: Long? = null,
 
     @JoinColumn(name = "id_product_inventory")
     @ManyToOne(fetch = FetchType.LAZY)
-    private val productInventory: ProductInventory? = null
+    var productInventory: ProductInventory,
 
     @JoinColumn(name = "id_product")
     @ManyToOne(fetch = FetchType.LAZY)
-    private val product: Product? = null
+    var product: Product,
 
     @OneToOne
     @JoinColumn(name = "id_user")
     @Type(type = "uuid-char")
-    private val user: User? = null
-    private val startDate: LocalDate? = null
-    private val collectionPlace: String? = null
+    var user: User,
+    var startDate: LocalDate,
+    var collectionPlace: String,
 
     @Enumerated(EnumType.STRING)
-    private val status: Status? = null
+    var status: BookingStatus
 
-    enum class Status {
-        WAITING_COLLECTION, ACTIVE, WAITING_RETURN, COMPLETE, LATE_RETURN
-    }
+)
+
+enum class BookingStatus {
+    WAITING_COLLECTION, ACTIVE, WAITING_RETURN, COMPLETE, LATE_RETURN
 }
-
-

@@ -2,6 +2,7 @@ package ie.shanequaid.scc.persistence.model
 
 import javax.persistence.CascadeType
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
@@ -12,41 +13,41 @@ import javax.persistence.OneToOne
 import javax.persistence.PrimaryKeyJoinColumn
 
 @Entity(name = "PRODUCT")
-class Product {
+class Product(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val id: Long? = null
-    private val name: String? = null
-    private val dryClean = false
-    private val hidden = false
-    private val deleted = false
-    private val quickDesc: String? = null
-    private val brand: String? = null
-    private val material: String? = null
-    private val description: String? = null
-    private val fittingInfo: String? = null
-    private val washInfo: String? = null
-    private val retailPrice = 0.0
+    val id: Long? = null,
+    val name: String,
+    val dryClean: Boolean = false,
+    var hidden: Boolean = true,
+    var deleted: Boolean = false,
+    val quickDesc: String,
+    val brand: String,
+    val material: String,
+    val description: String,
+    val fittingInfo: String,
+    val washInfo: String,
+    val retailPrice: Double,
 
     @OneToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "id_product_category")
-    private val category: ProductCategory? = null
+    val category: ProductCategory,
 
     @OneToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "id_season")
-    private val season: Season? = null
+    val season: Season,
 
     @OneToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "id_color")
-    private val color: Color? = null
+    val color: Color,
 
     @OneToOne(mappedBy = "product", cascade = [CascadeType.ALL])
     @PrimaryKeyJoinColumn
-    private val measurement: ProductMeasurement? = null
+    var measurement: ProductMeasurement,
 
     @OneToOne
     @JoinColumn(name = "id_cover_img")
-    private val imgCover: Image? = null
+    val imgCover: Image,
 
     @OneToMany(cascade = [CascadeType.MERGE])
     @JoinTable(
@@ -54,13 +55,9 @@ class Product {
         joinColumns = [JoinColumn(name = "ID_PRODUCT", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "ID_IMAGE", referencedColumnName = "id")]
     )
-    private val images: List<Image>? = null
+    val images: List<Image>,
 
-    @OneToMany(cascade = [CascadeType.ALL])
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER )
     @JoinColumn(name = "id_product")
-    private val occasions: List<ProductOccasion>? = null
-
-    @OneToMany(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "id_product")
-    private val sizes: List<ProductInventory>? = null
-}
+    var sizes: List<ProductInventory>
+)
