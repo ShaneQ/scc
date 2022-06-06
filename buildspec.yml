@@ -33,7 +33,8 @@ phases:
       - printf '[{"name":"resource-server","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - cat imagedefinitions.json
       - echo "commence post_build"
-      - cd build/test-results/test
+      - echo $CODEBUILD_SRC_DIR
+      - cd ../build/test-results/test
       - ls -al
       - cd ../../..
       - pwd
