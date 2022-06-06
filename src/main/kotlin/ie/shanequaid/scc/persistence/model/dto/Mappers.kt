@@ -119,12 +119,12 @@ fun BookingRequest.toDto() = BookingRequestDTO(
     returnDate = startDate.plusDays(7),
     collectionPlace = collectionPlace,
     status = status,
-    userId = user!!.id!!,
-    userName = user!!.fullName,
-    productId = product!!.id!!,
-    productName = product!!.name,
-    productSize = productInventory!!.toDtoView(),
-    coverImg = product!!.imgCover.toDto()
+    userId = user.id!!,
+    userName = user.fullName,
+    productId = product.id!!,
+    productName = product.name,
+    productSize = productInventory.toDtoView(),
+    coverImg = product.imgCover.toDto()
 
 )
 

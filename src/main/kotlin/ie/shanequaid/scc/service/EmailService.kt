@@ -94,12 +94,12 @@ class EmailService(
 
     fun sendEmailBookingAdmin(bookingRequest: BookingRequest) {
         val sizeName =
-            bookingRequest.product!!.sizes.first { it.id!! == bookingRequest.productInventory!!.id }.size!!.name
+            bookingRequest.product.sizes.first { it.id!! == bookingRequest.productInventory.id }.size!!.name
         val props: MutableMap<String, String> = HashMap()
         props["bookingId"] = bookingRequest.id.toString()
-        props["fullName"] = bookingRequest.user!!.fullName
-        props["productId"] = bookingRequest.product!!.id.toString()
-        props["productName"] = bookingRequest.product!!.name
+        props["fullName"] = bookingRequest.user.fullName
+        props["productId"] = bookingRequest.product.id.toString()
+        props["productName"] = bookingRequest.product.name
         props["productSize"] = sizeName
         props["bookingStartDate"] = bookingRequest.startDate.format(DateTimeFormatter.ISO_DATE)
         val html = getTemplateHtml(props, "admin/new-booking-request")

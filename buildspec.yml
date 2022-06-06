@@ -1,0 +1,41 @@
+version: 0.2
+
+
+phases:
+  pre_build:
+    commands:
+      - COMMIT_ID_SHORT=`echo "${CODEBUILD_RESOLVED_SOURCE_VERSION}" | cut -c1-8`
+      - TAG=`echo "${MAJOR}.${MINOR}.${COMMIT_ID_SHORT}"`
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/r5r0j5k2
+      - REPOSITORY_URI=public.ecr.aws/r5r0j5k2/resource-server
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
+  build:
+  pre_build:
+    commands:
+      - mvn clean install
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - ./gradlew clean build
+      - echo Building the Docker image...
+      - docker login -u banditquaid --password SomethingLong123
+      - docker build -t resource-server .
+      - docker tag resource-server:latest public.ecr.aws/r5r0j5k2/resource-server:latest
+      - docker tag resource-server:latest public.ecr.aws/r5r0j5k2/resource-server:$IMAGE_TAG
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push public.ecr.aws/r5r0j5k2/resource-server:latest
+      - docker push public.ecr.aws/r5r0j5k2/resource-server:$IMAGE_TAG
+      - echo Writing image definitions file...
+      - printf '[{"name":"resource-server","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - cat imagedefinitions.json
+artifacts:
+  files:
+   - imagedefinitions.json

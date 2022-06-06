@@ -10,7 +10,6 @@ import org.keycloak.admin.client.KeycloakBuilder
 import org.keycloak.representations.AccessTokenResponse
 import org.keycloak.representations.idm.RoleRepresentation
 import org.springframework.stereotype.Component
-import java.util.List
 import java.util.UUID
 
 @Component
@@ -48,6 +47,8 @@ class KeycloakService(
                 keycloakClientProperties.roleActiveMemberId
             Role.SCC_USER_ROLE -> roleRepresentation.id =
                 keycloakClientProperties.roleUserId
+            else ->
+                throw IllegalArgumentException("Role not created $role")
         }
         roleRepresentation.name = roleName
         roleRepresentation.isComposite = false
@@ -68,7 +69,7 @@ class KeycloakService(
             log.info("Removed role {} to user {}", roleName, userId)
 */
             keycloakClient.realm(SECOND_CLOSET_CLUB).users()[userId.toString()].roles()
-                .clientLevel(keycloakClientProperties.clientId).remove(List.of(getKeycloakRole(role)))
+                .clientLevel(keycloakClientProperties.clientId).remove(listOf(getKeycloakRole(role)))
         }
     }
 

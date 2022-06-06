@@ -29,7 +29,7 @@ class UserService constructor(
 
     fun update(dto: UserDTO, userId: UUID): User {
         val user: User = get(userId)
-        val entity: User = dto.toEntity(userId, user.startDate, user.endDate, user.membership, user.status!!)
+        val entity: User = dto.toEntity(userId, user.startDate, user.endDate, user.membership, user.status)
         return repository.save(entity)
     }
 
