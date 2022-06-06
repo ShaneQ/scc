@@ -4,9 +4,6 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo Nothing to do in the pre_build phase...
-      - yum install java-17-amazon-corretto-devel -y
-      - alternatives --set java /usr/lib/jvm/java-17-amazon-corretto.aarch64/bin/java
       - COMMIT_ID_SHORT=`echo "${CODEBUILD_RESOLVED_SOURCE_VERSION}" | cut -c1-8`
       - TAG=`echo "${MAJOR}.${MINOR}.${COMMIT_ID_SHORT}"`
       - echo Logging in to Amazon ECR...
