@@ -33,9 +33,7 @@ dependencies {
     implementation("org.keycloak:keycloak-admin-client:10.0.0")
     implementation("org.keycloak:keycloak-spring-boot-starter:15.0.2")
     implementation("com.amazonaws:aws-java-sdk:1.12.126")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.flywaydb:flyway-core:8.5.12")
-    implementation("org.flywaydb.enterprise:flyway-mysql:8.5.12")
+    implementation("org.flywaydb:flyway-mysql:8.5.12")
     implementation ("io.github.microutils:kotlin-logging-jvm:2.1.20")
     implementation ("ch.qos.logback:logback-classic:1.2.6")
 
