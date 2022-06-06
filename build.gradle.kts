@@ -34,7 +34,8 @@ dependencies {
     implementation("org.keycloak:keycloak-spring-boot-starter:15.0.2")
     implementation("com.amazonaws:aws-java-sdk:1.12.126")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.flywaydb:flyway-core:7.7.3")
+    implementation("org.flywaydb:flyway-core:8.5.12")
+    implementation("org.flywaydb.enterprise:flyway-mysql:8.5.12")
     implementation ("io.github.microutils:kotlin-logging-jvm:2.1.20")
     implementation ("ch.qos.logback:logback-classic:1.2.6")
 
@@ -42,6 +43,8 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("com.h2database:h2:2.1.212")
+
 }
 
 tasks.withType<KotlinCompile> {

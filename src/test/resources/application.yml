@@ -1,18 +1,40 @@
-spring:
-  datasource:
-    username: admin
-    password: SomethingLong123!
-    url: jdbc:mysql://scc.cxnse0qgwvdu.eu-west-1.rds.amazonaws.com:3306/resource-dani
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  flyway:
+server:
+  port: 8081
+  servlet:
+    context-path: /resource-server
+
+keycloak:
     enabled: false
-  autoconfigure:
-    exclude: org.keycloak.adapters.springboot.KeycloakAutoConfiguration
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+        spring:
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://dev-.....okta.com/oauth2/default
+
+  flyway:
+    enabled: true
+
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate.ddl-auto: none
 
 scc:
   bucket:
     name: second-closet-club-images-local
-    url: https://test.eu-west-1.amazonaws.com
+    url: https://second-closet-club-images-local.s3.eu-west-1.amazonaws.com
     region: eu-west-1
     accessKey: TEST
     secretKey: TEST
@@ -23,10 +45,11 @@ scc:
     accessKey: TEST
     secretKey: TEST
 
+---
 keycloak-client:
   server-url: http://localhost:8083/auth
-  username: masterapiuser
-  password: masterapiuser
-  clientId: b88ce206-63d6-43b6-87c9-ea09d8c02f32
-  roleUserId: c9efed4b-9edd-486d-a16f-dc5654ddf0b7
-  roleActiveMemberId: 4547c5d2-eb03-426f-bf3b-d7bf9a1a76dc
+  username: TEST
+  password: TEST
+  clientId: b88ce206-63d6-43b6-87c9-ea09d8c02f35
+  roleUserId: c9efed4b-9edd-486d-a16f-dc5654ddf0b5
+  roleActiveMemberId: 4547c5d2-eb03-426f-bf3b-d7bf9a1a76d5

@@ -6,10 +6,6 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   flyway:
-    url: jdbc:mysql://scc.cxnse0qgwvdu.eu-west-1.rds.amazonaws.com:3306
-    schemas: resource-local
-    user: admin
-    password: SomethingLong123!
     enabled: true
 
 scc:

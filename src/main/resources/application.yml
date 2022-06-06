@@ -11,12 +11,6 @@ management:
       base-path: '/api/admin/service-info'
 
 ---
-spring:
-  datasource:
-    username: admin
-    password: SomethingLong123!
-    url: jdbc:mysql://scc.cxnse0qgwvdu.eu-west-1.rds.amazonaws.com:3306/resource-dani
-    driver-class-name: com.mysql.cj.jdbc.Driver
 
 keycloak:
   realm: SecondClosetClub
