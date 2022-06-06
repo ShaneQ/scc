@@ -2,6 +2,9 @@ version: 0.2
 
 
 phases:
+  install:
+    runtime-versions:
+      java: corretto11
   pre_build:
     commands:
       - COMMIT_ID_SHORT=`echo "${CODEBUILD_RESOLVED_SOURCE_VERSION}" | cut -c1-8`
@@ -49,3 +52,7 @@ reports:
 artifacts:
   files:
    - imagedefinitions.json
+cache:
+  paths:
+    - '/root/.gradle/caches/**/*'
+    - '/root/.gradle/wrapper/**/*'
