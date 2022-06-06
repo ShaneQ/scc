@@ -22,7 +22,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - ./gradlew clean build --debug
+      - ./gradlew clean build
       - echo Building the Docker image...
       - docker login -u banditquaid --password SomethingLong123
       - docker build -t resource-server .
@@ -38,13 +38,6 @@ phases:
       - echo Writing image definitions file...
       - printf '[{"name":"resource-server","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - cat imagedefinitions.json
-      - echo "commence post_build"
-      - echo $CODEBUILD_SRC_DIR
-      - cd ../build/test-results/test
-      - ls -al
-      - cd ../../..
-      - pwd
-      - echo "post_build complete"
 reports:
   unit-test-reports:
     files:
