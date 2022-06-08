@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.data.repository.query.Param
 import java.time.LocalDate
-import java.util.Optional
 import java.util.UUID
 
 interface IBookingRequestRepository : PagingAndSortingRepository<BookingRequest, Long> {
@@ -21,7 +20,7 @@ interface IBookingRequestRepository : PagingAndSortingRepository<BookingRequest,
 interface IImageRepository : PagingAndSortingRepository<Image, Long>
 
 interface IProductRepository : PagingAndSortingRepository<Product?, Long> {
-    fun findByDeletedFalseAndHiddenFalse(): List<Product>
+    fun findByDeletedFalseAndActiveTrue(): List<Product>
     fun findByDeletedFalse(): List<Product>
 }
 

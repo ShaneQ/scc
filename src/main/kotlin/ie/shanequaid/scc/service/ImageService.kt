@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
+import java.util.UUID
 
 @Service
 class ImageService(
@@ -28,15 +29,18 @@ class ImageService(
         //Save Image in S3 and then save Todo in the database
         val s3BucketFolder = "images"
         val path = java.lang.String.format("%s/%s", properties.name, s3BucketFolder)
-        val fileName = String.format("%s", file.originalFilename).replace(" ", "")
+        val originalFileName = String.format("%s", file.originalFilename).replace(" ", "")
+        val fileType = originalFileName.substringAfterLast('.', "")
+        val uuid = UUID.randomUUID()
+        val newFileName = "$uuid.$fileType"
         try {
-            s3BucketService.upload(path, fileName, metadata, file.inputStream)
+            s3BucketService.upload(path, newFileName, metadata, file.inputStream)
         } catch (e: IOException) {
             logger.error(e) { "Issue writing to s3 $path" }
             throw S3BucketException("Failed to upload file")
         }
-        val url = properties.url + "/" + s3BucketFolder + "/" + fileName;
-        val todo = Image(id = null, path = url, fileName = fileName)
+        val url = properties.url + "/$s3BucketFolder/$newFileName"
+        val todo = Image(id = null, path = url, fileName = originalFileName, guid = uuid.toString())
 
         val save: Image = repository.save(todo)
         return save.toDto()

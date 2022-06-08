@@ -1,6 +1,9 @@
 package ie.shanequaid.scc.persistence.model
 
+import org.hibernate.annotations.GenericGenerator
+import java.util.UUID
 import javax.persistence.CascadeType
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
@@ -17,9 +20,11 @@ class Product(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
+    @Column(updatable = false, nullable = false)
+    val guid: String? = UUID.randomUUID().toString(),
     val name: String,
     val dryClean: Boolean = false,
-    var hidden: Boolean = true,
+    var active: Boolean = false,
     var deleted: Boolean = false,
     val quickDesc: String,
     val brand: String,

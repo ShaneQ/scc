@@ -1,7 +1,10 @@
 package ie.shanequaid.scc.persistence.model
 
+import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.Type
 import java.time.LocalDate
+import java.util.UUID
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.EnumType
 import javax.persistence.Enumerated
@@ -18,6 +21,9 @@ class BookingRequest(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
+
+    @Column(updatable = false, nullable = false)
+    val guid: String? = UUID.randomUUID().toString(),
 
     @JoinColumn(name = "id_product_inventory")
     @ManyToOne(fetch = FetchType.LAZY)

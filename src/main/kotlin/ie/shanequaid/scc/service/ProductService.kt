@@ -37,12 +37,12 @@ class ProductService(private val repository: IProductRepository) {
     }
 
     fun findAllActive(): List<Product> {
-        return repository.findByDeletedFalseAndHiddenFalse()
+        return repository.findByDeletedFalseAndActiveTrue()
     }
 
     fun toggleHidden(id: Long, hidden: Boolean) {
         val entity = findById(id) ?: throw ResourceNotFoundException("Product not found")
-        entity.hidden = true
+        entity.active = !hidden
         repository.save(entity)
     }
 
@@ -67,7 +67,7 @@ class ProductService(private val repository: IProductRepository) {
         val entity = findById(productId) ?: throw ResourceNotFoundException("Product not found")
         entity.sizes.map {
             if (it.id == inventoryId) {
-                ProductInventory(status, id = it.id, id_product = it.id_product, size = it.size)
+                ProductInventory(status = status, id = it.id, id_product = it.id_product, size = it.size)
             }
         }
         repository.save(entity)

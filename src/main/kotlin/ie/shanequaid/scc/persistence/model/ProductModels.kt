@@ -1,5 +1,7 @@
 package ie.shanequaid.scc.persistence.model
 
+import org.hibernate.annotations.GenericGenerator
+import java.util.UUID
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.EnumType
@@ -14,16 +16,22 @@ import javax.persistence.OneToOne
 @Entity
 class ProductInventory(
 
-    @Column(name = "STATUS")
-    @Enumerated(EnumType.STRING)
-    val status: ProductInventoryStatus? = null,
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
+
+    @Column(updatable = false, nullable = false)
+    val guid: String? = UUID.randomUUID().toString(),
+
+    @Column(name = "STATUS")
+    @Enumerated(EnumType.STRING)
+    val status: ProductInventoryStatus? = null,
+
     val id_product: Long? = null,
     @OneToOne
     @JoinColumn(name = "id_size")
-    val size: Size? = null
+    val size: Size? = null,
+    var active: Boolean = true
 )
 
 enum class ProductInventoryStatus {
