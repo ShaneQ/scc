@@ -20,7 +20,7 @@ spring:
           jwk-set-uri: https://dev-.....okta.com/oauth2/default
 
   flyway:
-    enabled: true
+    enabled: false
 
   datasource:
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;
@@ -51,5 +51,3 @@ keycloak-client:
   username: TEST
   password: TEST
   clientId: b88ce206-63d6-43b6-87c9-ea09d8c02f35
-  roleUserId: c9efed4b-9edd-486d-a16f-dc5654ddf0b5
-  roleActiveMemberId: 4547c5d2-eb03-426f-bf3b-d7bf9a1a76d5
