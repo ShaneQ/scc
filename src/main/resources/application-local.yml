@@ -1,7 +1,7 @@
 spring:
   datasource:
-    username: admin
-    password: SomethingLong123!
+    username: TEST
+    password: TEST
     url: jdbc:mysql://scc.cxnse0qgwvdu.eu-west-1.rds.amazonaws.com:3306/resource-local
     driver-class-name: com.mysql.cj.jdbc.Driver
 
@@ -25,11 +25,9 @@ scc:
 ---
 keycloak-client:
   server-url: http://localhost:8083/auth
-  username: masterapiuser
-  password: masterapiuser
+  username: TEST
+  password: TEST
   clientId: b88ce206-63d6-43b6-87c9-ea09d8c02f32
-  roleUserId: c9efed4b-9edd-486d-a16f-dc5654ddf0b7
-  roleActiveMemberId: 4547c5d2-eb03-426f-bf3b-d7bf9a1a76dc
 
 keycloak:
   auth-server-url:  "http://localhost:8083/auth"

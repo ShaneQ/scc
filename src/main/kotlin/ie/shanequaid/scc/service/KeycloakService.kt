@@ -3,11 +3,8 @@ package ie.shanequaid.scc.service
 import ie.shanequaid.scc.persistence.model.dto.KeycloakUserInfo
 import ie.shanequaid.scc.persistence.model.dto.Role
 import ie.shanequaid.scc.spring.properties.KeycloakClientProperties
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder
-import org.keycloak.OAuth2Constants
+import mu.KotlinLogging
 import org.keycloak.admin.client.Keycloak
-import org.keycloak.admin.client.KeycloakBuilder
-import org.keycloak.representations.AccessTokenResponse
 import org.keycloak.representations.idm.RoleRepresentation
 import org.springframework.stereotype.Component
 import java.util.UUID
@@ -17,6 +14,7 @@ class KeycloakService(
     private val keycloakClient: Keycloak,
     private val keycloakClientProperties: KeycloakClientProperties
 ) {
+    private val logger = KotlinLogging.logger {}
 
     companion object {
         private const val SECOND_CLOSET_CLUB = "secondClosetClub"
@@ -30,31 +28,22 @@ class KeycloakService(
                 roleRep.name.equals(roleName, ignoreCase = true)
             }
         if (!hasRole) {
-/*
-            log.info("Added role {} to user {}", roleName, userId)
-*/
-                keycloakClient.realm(SECOND_CLOSET_CLUB).users()[userId.toString()].roles()
-                    .clientLevel(keycloakClientProperties.clientId).add(listOf(getKeycloakRole(role)))
-
+            logger.info { "Added role $roleName to user $userId" }
+            keycloakClient.realm(SECOND_CLOSET_CLUB).users()[userId.toString()].roles()
+                .clientLevel(keycloakClientProperties.clientId).add(listOf(getKeycloakRoleFromKeycloak(role, userId)))
         }
     }
 
-    private fun getKeycloakRole(role: Role): RoleRepresentation {
-        val roleName = role.name.lowercase()
-        val roleRepresentation = RoleRepresentation()
+    private fun getKeycloakRoleFromKeycloak(role: Role, userId: UUID): RoleRepresentation {
         when (role) {
-            Role.SCC_ACTIVE_MEMBERSHIP -> roleRepresentation.id =
-                keycloakClientProperties.roleActiveMemberId
-            Role.SCC_USER_ROLE -> roleRepresentation.id =
-                keycloakClientProperties.roleUserId
+            Role.SCC_ACTIVE_MEMBERSHIP,
+            Role.SCC_USER_ROLE ->
+                return keycloakClient.realm(SECOND_CLOSET_CLUB).users()[userId.toString()].roles()
+                    .clientLevel(keycloakClientProperties.clientId).listAvailable()
+                    .first { it.name.equals(role.name.lowercase()) }
             else ->
                 throw IllegalArgumentException("Role not created $role")
         }
-        roleRepresentation.name = roleName
-        roleRepresentation.isComposite = false
-        roleRepresentation.clientRole = true
-        roleRepresentation.containerId = keycloakClientProperties.clientId
-        return roleRepresentation
     }
 
     fun removeRole(userId: UUID, role: Role) {
@@ -65,41 +54,11 @@ class KeycloakService(
                 roleRep.name.equals(roleName, ignoreCase = true)
             }
         if (hasRole) {
-/*
-            log.info("Removed role {} to user {}", roleName, userId)
-*/
+            logger.info { "Removed role $roleName to user $userId" }
+
             keycloakClient.realm(SECOND_CLOSET_CLUB).users()[userId.toString()].roles()
-                .clientLevel(keycloakClientProperties.clientId).remove(listOf(getKeycloakRole(role)))
+                .clientLevel(keycloakClientProperties.clientId).remove(listOf(getKeycloakRoleFromKeycloak(role, userId)))
         }
-    }
-
-    fun keycloakClient(): Keycloak {
-        return KeycloakBuilder.builder()
-            .serverUrl("http://localhost:8083/auth")
-            .grantType(OAuth2Constants.PASSWORD)
-            .realm("master")
-            .clientId("admin-cli")
-            .username("masterapiuser")
-            .password("masterapiuser")
-            .resteasyClient(
-                ResteasyClientBuilder()
-                    .connectionPoolSize(10).build()
-            ).build()
-    }
-
-    fun newKeycloakLogin(): AccessTokenResponse {
-        val keycloak = KeycloakBuilder.builder()
-            .serverUrl("http://localhost:8083/auth")
-            .grantType(OAuth2Constants.PASSWORD)
-            .realm("master")
-            .clientId("admin-cli")
-            .username("masterapiuser")
-            .password("masterapiuser")
-            .resteasyClient(
-                ResteasyClientBuilder()
-                    .connectionPoolSize(10).build()
-            ).build()
-        return keycloak.tokenManager().accessToken
     }
 
     fun getUserInfo(userId: UUID): KeycloakUserInfo {

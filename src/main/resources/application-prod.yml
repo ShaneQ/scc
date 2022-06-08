@@ -28,8 +28,6 @@ keycloak-client:
   username: ${KEYCLOAK_CLIENT_USER_NAME}
   password: ${KEYCLOAK_CLIENT_USER_PASSWORD}
   clientId: ${KEYCLOAK_CLIENT_ID}
-  roleUserId: ${KEYCLOAK_CLIENT_ROLE_ID_USER}
-  roleActiveMemberId: ${KEYCLOAK_CLIENT_ROLE_ID_ACTIVE_MEMBER}
 
 keycloak:
   auth-server-url:  ${KEYCLOAK_BASE_URI}
