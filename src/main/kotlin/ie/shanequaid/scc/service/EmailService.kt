@@ -8,6 +8,7 @@ import com.amazonaws.services.simpleemail.model.Message
 import com.amazonaws.services.simpleemail.model.SendEmailRequest
 import ie.shanequaid.scc.persistence.model.BookingRequest
 import ie.shanequaid.scc.spring.properties.SCCEmailProperties
+import mu.KotlinLogging
 import org.apache.commons.codec.CharEncoding
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
@@ -22,6 +23,8 @@ class EmailService(
     @Qualifier("SCCEmailProperties") private val properties: SCCEmailProperties,
     private val templateEngine: SpringTemplateEngine
 ) {
+    private val logger = KotlinLogging.logger {}
+
     fun sendEmailActivatedAdmin(fullName: String, email: String) {
         val props: MutableMap<String, Any> = HashMap()
         props["name"] = fullName
@@ -45,13 +48,9 @@ class EmailService(
                 )
                 .withSource(properties.senderEmail)
             client.sendEmail(sendEmailRequest)
-/*
-            log.info("Registration email sent to admin")
-*/
+            logger.info { "Registration email sent to admin" }
         } catch (e: Exception) {
-/*
-            log.error("Failed to send admin email", e)
-*/
+            logger.error(e) { "Failed to send admin email" }
         }
     }
 
@@ -82,13 +81,9 @@ class EmailService(
                 )
                 .withSource(properties.senderEmail)
             client.sendEmail(sendEmailRequest)
-/*
-            log.info("User Activation email sent to {}", userId)
-*/
+            logger.info { "User Activation email sent to $userId" }
         } catch (e: Exception) {
-/*
-            log.error("Failed to send email to user {}", userId, e)
-*/
+            logger.error(e) { "Failed to send email to user $userId" }
         }
     }
 
@@ -102,6 +97,7 @@ class EmailService(
         props["productName"] = bookingRequest.product.name
         props["productSize"] = sizeName
         props["bookingStartDate"] = bookingRequest.startDate.format(DateTimeFormatter.ISO_DATE)
+        props["collectionLocation"] = bookingRequest.collectionPlace
         val html = getTemplateHtml(props, "admin/new-booking-request")
         val emailSubject = "New Booking Request"
         try {
@@ -120,13 +116,9 @@ class EmailService(
                 )
                 .withSource(properties.senderEmail)
             client.sendEmail(sendEmailRequest)
-/*
-            log.info("Booking request email to Admin for booking id {}", bookingRequest.getId())
-*/
+            logger.info { "Booking request email to Admin for booking id ${bookingRequest.id}" }
         } catch (e: Exception) {
-/*
-            log.error("Failed to send email to Admin for booking id {}", bookingRequest.getId(), e)
-*/
+            logger.error(e) { "Failed to send email to Admin for booking id ${bookingRequest.id} " }
         }
     }
 }
