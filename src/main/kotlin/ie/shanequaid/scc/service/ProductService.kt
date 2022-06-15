@@ -29,6 +29,7 @@ class ProductService(private val repository: IProductRepository) {
         val newEntity: Product = productDTO.toEntity()
         newEntity.measurement = productDTO.measurements.toEntity(newEntity.id!!, newEntity)
         newEntity.sizes = productDTO.sizes.map { it.toEntity(productDTO.id) }
+        newEntity.active = false
         return repository.save(newEntity)
     }
 
