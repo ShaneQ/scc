@@ -20,6 +20,7 @@ class BookingManagementController(
 ) {
     @GetMapping("/bookings")
     fun findAll(): Collection<BookingRequestDTO> {
+        //test change can delete
         val entities: Iterable<BookingRequest> = service.findAll()
 
         return entities.map {
