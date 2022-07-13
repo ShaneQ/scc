@@ -39,7 +39,7 @@ class KeycloakService(
             Role.SCC_ACTIVE_MEMBERSHIP,
             Role.SCC_USER_ROLE ->
                 return keycloakClient.realm(SECOND_CLOSET_CLUB).users()[userId.toString()].roles()
-                    .clientLevel(keycloakClientProperties.clientId).listAvailable()
+                    .clientLevel(keycloakClientProperties.clientId).listAll()
                     .first { it.name.equals(role.name.lowercase()) }
             else ->
                 throw IllegalArgumentException("Role not created $role")
