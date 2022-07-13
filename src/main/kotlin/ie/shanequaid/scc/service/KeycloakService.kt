@@ -1,5 +1,6 @@
 package ie.shanequaid.scc.service
 
+import ie.shanequaid.scc.exceptions.KeycloakException
 import ie.shanequaid.scc.persistence.model.dto.KeycloakUserInfo
 import ie.shanequaid.scc.persistence.model.dto.Role
 import ie.shanequaid.scc.spring.properties.KeycloakClientProperties
@@ -30,20 +31,35 @@ class KeycloakService(
         if (!hasRole) {
             logger.info { "Added role $roleName to user $userId" }
             keycloakClient.realm(SECOND_CLOSET_CLUB).users()[userId.toString()].roles()
-                .clientLevel(keycloakClientProperties.clientId).add(listOf(getKeycloakRoleFromKeycloak(role, userId)))
+                .clientLevel(keycloakClientProperties.clientId).add(listOf(getNewKeycloakRoleFromKeycloak(role, userId)))
         }
     }
-
-    private fun getKeycloakRoleFromKeycloak(role: Role, userId: UUID): RoleRepresentation {
-        when (role) {
-            Role.SCC_ACTIVE_MEMBERSHIP,
-            Role.SCC_USER_ROLE ->
-                return keycloakClient.realm(SECOND_CLOSET_CLUB).users()[userId.toString()].roles()
-                    .clientLevel(keycloakClientProperties.clientId).listAll()
-                    .first { it.name.equals(role.name.lowercase()) }
-            else ->
-                throw IllegalArgumentException("Role not created $role")
+    private fun getKeycloakRoleFromKeycloak(role: Role, userId: UUID, roles:  List<RoleRepresentation>): RoleRepresentation {
+        try {
+            when (role) {
+                Role.SCC_ACTIVE_MEMBERSHIP,
+                Role.SCC_USER_ROLE ->
+                    return roles
+                        .first { it.name.equals(role.name.lowercase()) }
+                else ->
+                    throw IllegalArgumentException("Role not created $role")
+            }
+        }catch ( ex: NoSuchElementException){
+            logger.error{ "Failed to add role $role to user $userId, possible roles $roles"}
         }
+        throw KeycloakException("Could not find role to change")
+    }
+
+    private fun getNewKeycloakRoleFromKeycloak(role: Role, userId: UUID): RoleRepresentation {
+        val roles = keycloakClient.realm(SECOND_CLOSET_CLUB).users()[userId.toString()].roles()
+            .clientLevel(keycloakClientProperties.clientId).listAvailable()
+        return getKeycloakRoleFromKeycloak(role, userId, roles)
+    }
+
+    private fun getExistingKeycloakRoleFromKeycloak(role: Role, userId: UUID): RoleRepresentation {
+        val roles = keycloakClient.realm(SECOND_CLOSET_CLUB).users()[userId.toString()].roles()
+            .clientLevel(keycloakClientProperties.clientId).listAll()
+        return getKeycloakRoleFromKeycloak(role, userId, roles)
     }
 
     fun removeRole(userId: UUID, role: Role) {
@@ -57,7 +73,7 @@ class KeycloakService(
             logger.info { "Removed role $roleName to user $userId" }
 
             keycloakClient.realm(SECOND_CLOSET_CLUB).users()[userId.toString()].roles()
-                .clientLevel(keycloakClientProperties.clientId).remove(listOf(getKeycloakRoleFromKeycloak(role, userId)))
+                .clientLevel(keycloakClientProperties.clientId).remove(listOf(getExistingKeycloakRoleFromKeycloak(role, userId)))
         }
     }
 

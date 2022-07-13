@@ -8,3 +8,6 @@ class ResourceNotFoundException(message: String) : RuntimeException(message)
 
 @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 class S3BucketException(message: String) : RuntimeException(message)
+
+@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+class KeycloakException(message: String) : RuntimeException(message)
